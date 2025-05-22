@@ -1,6 +1,6 @@
 /*
   Hello This is me Hashtag .....
-  This is my Personal Home Project, I use this project in my room for sensing my Room Enviroment and receive data from other ESP.
+  This is my Personal Home Automation Work, I use this project in my room for sensing my Room Enviroment and receive data from other ESP.
   Then that data is displayed to Dot Matrix with few basic Animations.
   This Code also makes sure the Client & Wifi stays connected or retry...!
   This Also has the Web based UI to show data over Web.. The Ip will be given to you..!
@@ -12,6 +12,7 @@
 */
 
 //Change Values and Data before using the code
+//(Changes needed) Line Number ->32,33,34,36,37,299,300
 
 //===================================================================================================================
 // --- Libraries Used ---
@@ -88,7 +89,6 @@ void setup()
   Serial.println("================================================================================================");
   Serial.println("Weather Report : " + weather_rp);
   Serial.println("================================================================================================");
-  
 }
 
 //===================================================================================================================
@@ -230,6 +230,8 @@ void connectToServer()
   }
   Serial.println("\n✅ Connected to server!");
   m1.displayClear();
+  m1.displayText(weather_rp.c_str(), PA_CENTER, 100, 0, PA_SCROLL_LEFT, PA_SCROLL_LEFT);
+  m1.displayReset();
 }
 
 //===================================================================================================================
@@ -450,50 +452,50 @@ void setupWebUI()
     html += "<div class='item'><span class='label'>Air Quality:</span><span class='value'>" + String(aoq) + "</span></div>";
     // --- MODIFIED WEATHER DISPLAY ---
     String local_weather_rp = weather_rp; // Use a local copy
-    if (local_weather_rp.startsWith("Error") || local_weather_rp.startsWith("Loading")) 
+    if (local_weather_rp.startsWith("Error") || local_weather_rp.startsWith("Loading"))
     {
-        // Display error or loading message directly but styled
-        html += "<div class='weather-section'>";
-        html += "  <div class='weather-item'><span class='weather-label'>Weather:</span>" + local_weather_rp + "</div>";
-        html += "</div>";
-    } 
-    else 
+      // Display error or loading message directly but styled
+      html += "<div class='weather-section'>";
+      html += "  <div class='weather-item'><span class='weather-label'>Weather:</span>" + local_weather_rp + "</div>";
+      html += "</div>";
+    }
+    else
     {
-        int pipePosition = local_weather_rp.indexOf('|');
-        String cityTempInfo = "";
-        String weatherConditionInfo = "";
-        if (pipePosition != -1) {
-            cityTempInfo = local_weather_rp.substring(0, pipePosition);
-            weatherConditionInfo = local_weather_rp.substring(pipePosition + 1);
-            // Clean up the extracted parts
-            cityTempInfo.replace("City Temp:", "");
-            weatherConditionInfo.replace("Weather:", "");
-            cityTempInfo.trim(); 
-            weatherConditionInfo.trim();
-            // --- Ensure cityTempInfo value ends with °C ---
-            String tempNumberPart = cityTempInfo; // e.g., "32.1°C", "32.1 C", "32.1C"
-            // Remove existing unit suffixes to isolate the number
-            if (tempNumberPart.endsWith("°C")) {
-                tempNumberPart.remove(tempNumberPart.length() - 2); // Remove "°C"
-            } else if (tempNumberPart.endsWith(" C")) { // Handles " C" (with a space)
-                tempNumberPart.remove(tempNumberPart.length() - 2); // Remove " C"
-            } else if (tempNumberPart.endsWith("C")) { // Handles "C" (without a space)
-                tempNumberPart.remove(tempNumberPart.length() - 1); // Remove "C"
-            }
-            tempNumberPart.trim(); // Ensure no trailing/leading spaces on the number part
-            // Reconstruct cityTempInfo with the number and the °C unit
-            cityTempInfo = tempNumberPart + "°C";
-            // --- End of °C enforcement ---
-            html += "<div class='weather-section'>"; // Container for the improved weather info
-            html += "  <div class='weather-item'><span class='weather-label'>City Temp:</span>" + cityTempInfo + "</div>";
-            html += "  <div class='weather-item'><span class='weather-label'>Condition:</span>" + weatherConditionInfo + "</div>";
-            html += "</div>";
-        } else {
-            // Fallback if parsing fails for an unexpected format
-            html += "<div class='weather-section'>";
-            html += "  <div class='weather-item'><span class='weather-label'>Weather Info:</span>" + local_weather_rp + "</div>";
-            html += "</div>";
+      int pipePosition = local_weather_rp.indexOf('|');
+      String cityTempInfo = "";
+      String weatherConditionInfo = "";
+      if (pipePosition != -1) {
+        cityTempInfo = local_weather_rp.substring(0, pipePosition);
+        weatherConditionInfo = local_weather_rp.substring(pipePosition + 1);
+        // Clean up the extracted parts
+        cityTempInfo.replace("City Temp:", "");
+        weatherConditionInfo.replace("Weather:", "");
+        cityTempInfo.trim();
+        weatherConditionInfo.trim();
+        // --- Ensure cityTempInfo value ends with °C ---
+        String tempNumberPart = cityTempInfo; // e.g., "32.1°C", "32.1 C", "32.1C"
+        // Remove existing unit suffixes to isolate the number
+        if (tempNumberPart.endsWith("°C")) {
+          tempNumberPart.remove(tempNumberPart.length() - 2); // Remove "°C"
+        } else if (tempNumberPart.endsWith(" C")) { // Handles " C" (with a space)
+          tempNumberPart.remove(tempNumberPart.length() - 2); // Remove " C"
+        } else if (tempNumberPart.endsWith("C")) { // Handles "C" (without a space)
+          tempNumberPart.remove(tempNumberPart.length() - 1); // Remove "C"
         }
+        tempNumberPart.trim(); // Ensure no trailing/leading spaces on the number part
+        // Reconstruct cityTempInfo with the number and the °C unit
+        cityTempInfo = tempNumberPart + "°C";
+        // --- End of °C enforcement ---
+        html += "<div class='weather-section'>"; // Container for the improved weather info
+        html += "  <div class='weather-item'><span class='weather-label'>City Temp:</span>" + cityTempInfo + "</div>";
+        html += "  <div class='weather-item'><span class='weather-label'>Condition:</span>" + weatherConditionInfo + "</div>";
+        html += "</div>";
+      } else {
+        // Fallback if parsing fails for an unexpected format
+        html += "<div class='weather-section'>";
+        html += "  <div class='weather-item'><span class='weather-label'>Weather Info:</span>" + local_weather_rp + "</div>";
+        html += "</div>";
+      }
     }
     // --- END OF MODIFIED WEATHER DISPLAY ---
     // Close HTML
@@ -509,11 +511,16 @@ void setupWebUI()
   server.begin();
   Serial.println("🌐 Web server started at http://" + WiFi.localIP().toString());
 }
+
 //===================================================================================================================
 // --- String Converter for Matrix Display ---
 //===================================================================================================================
-String fixUTF8(String input)
+String fixUTF8(String input) //Not used anymore .... I used this for printing Degree Symbol in the Marix then left the IDea.,,
 {
   input.replace("°", "\xB0"); // replaces UTF-8 degree with extended ASCII degree
   return input;
 }
+
+//===================================================================================================================
+// --- The End ---
+//===================================================================================================================
