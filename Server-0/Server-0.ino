@@ -21,7 +21,6 @@
 #include <LiquidCrystal_PCF8574.h>
 #define DHTPIN 13                    // what pin DHT22 is connected to                <----------------------------------
 #define DHTTYPE DHT22
-const char* ssid = "Hash~2Ghz";
 
 //===================================================================================================================
 // --- Variables and Constants ---
