@@ -11,8 +11,8 @@
   LinkedIn: https://www.linkedin.com/in/itzz-hashtag/
 */
 
-//Change Values and Data before using the code
-//(Changes needed) Line Number ->32,33,34,36,37,299,300
+//Open File->Preferences->Additional Boards Manager URL's ->(Copy and Paste) "https://dl.espressif.com/dl/package_esp32_index.json,http://arduino.esp8266.com/stable/package_esp8266com_index.json"
+//ALso Change Values and Data before using the code (Changes needed) Line Number ->32,33,34,36,37,299,300
 
 //===================================================================================================================
 // --- Libraries Used ---
