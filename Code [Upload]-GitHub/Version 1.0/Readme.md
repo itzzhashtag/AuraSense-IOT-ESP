@@ -1,42 +1,28 @@
+# 🌦️ ESP32 Weather Display (OpenWeatherMap - Simple UI)
 
----
+This project displays real-time weather data using an ESP32 and a simple web-based user interface. It fetches weather information from the OpenWeatherMap API and presents it in a clean and minimal format.
 
-## 📄 **2. `README.md` — 🌍 Advanced Weather UI (Tomorrow.io + Full Metrics)**
+## 🛠️ Features
 
-```markdown
-# 🌍 ESP32 Advanced Weather Station (Tomorrow.io + Full Dashboard UI)
+- Real-time temperature and weather condition display
+- Minimalistic HTML-based UI
+- Uses OpenWeatherMap API for weather data
+- Fast and lightweight – ideal for smaller displays or limited devices
 
-A powerful weather dashboard powered by **Tomorrow.io** API and hosted on an ESP32 microcontroller. Displays detailed environmental data with modern UI and API optimization.
+## 📦 Components Used
 
-![ESP32](https://img.shields.io/badge/Board-ESP32-blue)
-![API](https://img.shields.io/badge/API-Tomorrow.io-purple)
-![UI](https://img.shields.io/badge/UI-Advanced-darkgreen)
+- ESP32 Dev Board
+- Wi-Fi connection
+- OpenWeatherMap API Key
 
----
+## 🧠 How It Works
 
-## ⚙️ Built With
+1. ESP32 connects to Wi-Fi.
+2. It fetches weather data in JSON format from OpenWeatherMap.
+3. Parses and displays:
+   - Temperature
+   - Weather condition (e.g., Clear, Rainy, etc.)
 
-- 🌐 **Tomorrow.io API (v4)**
-- ⚙️ ESP32 Dev Board
-- 🖥️ WebServer with dynamic HTML/CSS
-- 📡 Asynchronous JSON data fetch
+## 🌐 UI Preview
 
----
-
-## 🔗 Tomorrow.io API - Smart Weather Intelligence
-
-> [🔗 https://www.tomorrow.io](https://www.tomorrow.io)
-
-- Highly granular weather data (down to 1-minute resolution)
-- Metrics like:
-  - 🌡️ Temperature
-  - 💧 Humidity
-  - 💨 Wind Speed
-  - 🌞 UV Index
-  - 🌫️ Visibility
-  - 🌡️ Pressure
-  - 🌦️ Condition
-
-### Sample API Request:
-```http
-GET https://api.tomorrow.io/v4/weather/realtime?location=28.6,77.2&apikey=YOUR_API_KEY
+A basic HTML page shows:
