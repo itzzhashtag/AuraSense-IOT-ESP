@@ -25,4 +25,5 @@ This project displays real-time weather data using an ESP32 and a simple web-bas
 
 ## 🌐 UI Preview
 
-A basic HTML page shows:
+A basic HTML page shows: ![image](https://github.com/user-attachments/assets/5d3a0d2f-3757-4025-b7fe-212a4ecc9ca8)
+
