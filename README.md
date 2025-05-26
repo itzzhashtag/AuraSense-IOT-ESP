@@ -9,7 +9,7 @@
 This project creates a smart room dashboard using two ESP32 microcontrollers:
 
 - **Server ESP32:** Collects real-time sensor data (Temperature, Humidity, Air Quality) and transmits it via TCP over Wi-Fi.
-- **Client ESP32:** Receives sensor data, displays it on a dual 8x32 LED matrix, fetches weather updates from Weather API, and hosts a simple web interface for real-time monitoring.
+- **Client ESP32:** Receives sensor data, displays it on a dual 8x32 LED matrix, fetches weather updates from Weather API, and hosts a web interface for real-time monitoring.
 
 ---
 
