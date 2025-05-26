@@ -19,7 +19,7 @@ This project creates a smart room dashboard using two ESP32 microcontrollers:
 - 🌡️ **DHT22** for temperature and humidity sensing.
 - 🌫️ **MQ-135** for air quality monitoring.
 - 🔲 **LED Matrix Display (2 x 8x32)** using MD_MAX72XX and Parola libraries.
-- 🌍 **Weather Data** fetched from OpenWeatherMap API.
+- 🌍 **Weather Data** fetched from a Weather API. [Lot of Options] - I personally Chose www.tomorrow.io
 - 🕒 **NTP Time Sync** for accurate data logging.
 - 🌐 **Web Server UI** for real-time monitoring via browser.
 - ♻️ **Auto-Reconnect & Watchdog Timer** for system reliability.
@@ -67,7 +67,7 @@ This project creates a smart room dashboard using two ESP32 microcontrollers:
 
 **Name:** Aniket Chowdhury (aka Hashtag)  
 **Email:** micro.aniket@example.com  
-**GitHub:** [itzzhashtag](https://github.com/itzzhashtag/AuraSense-IOT-ESP-1)  
+**GitHub:** [itzzhashtag](https://github.com/itzzhashtag)  
 **Instagram:** [@itzz_hashtag](https://instagram.com/itzz_hashtag)  
 **LinkedIn:** [itzz-hashtag](https://www.linkedin.com/in/itzz-hashtag/)
 
