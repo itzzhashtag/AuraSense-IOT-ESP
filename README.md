@@ -13,6 +13,14 @@ This project creates a smart room dashboard using two ESP32 microcontrollers:
 
 ---
 
+⚠️ **Important Notice Before Using the Code**
+
+Please make sure to **change the placeholder values and data variables** in the code before running it.
+
+For your convenience, I have added comments indicating the exact **line numbers where changes are needed**.  
+ 
+---
+
 ## 🔧 Features
 
 - 📶 **ESP-to-ESP TCP Communication** on local network.
