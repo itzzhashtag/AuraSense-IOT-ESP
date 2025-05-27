@@ -1,4 +1,16 @@
+<div align="center">
+ 
 # AuraSense-IOT-ESP-1 🌐🔧
+
+**by [Aniket Chowdhury](mailto:micro.aniket@gmail.com) (aka `#Hashtag`)**
+
+<img src="https://img.shields.io/badge/Status-Working-brightgreen?style=for-the-badge&logo=arduino" alt="Status Badge" />
+<img src="https://img.shields.io/badge/Built%20with-Arduino-blue?style=for-the-badge&logo=arduino" alt="Arduino Badge" />
+<img src="https://img.shields.io/badge/License-Personal--Use-orange?style=for-the-badge" alt="License Badge" />
+
+</div>
+
+
 
 **AuraSense IOT (ESP-1)** is a dual-ESP32 based real-time room environment monitoring and weather display system. It demonstrates wireless TCP/IP communication between two ESP32 devices, sensor data collection, API integration, and visual output on an LED matrix display.
 
