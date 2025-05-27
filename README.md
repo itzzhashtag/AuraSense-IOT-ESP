@@ -10,9 +10,11 @@
 
 </div>
 
+---
 
-#
-**AuraSense IOT (ESP-1)** is a dual-ESP32 based real-time room environment monitoring and weather display system. It demonstrates wireless TCP/IP communication between two ESP32 devices, sensor data collection, API integration, and visual output on an LED matrix display.
+<div align="center">
+AuraSense IOT (ESP-1) is a dual-ESP32 based real-time room environment monitoring and weather display system. It demonstrates wireless TCP/IP communication between two ESP32 devices, sensor data collection, API integration, and visual output on an LED matrix display.
+</div>
 
 ---
 
