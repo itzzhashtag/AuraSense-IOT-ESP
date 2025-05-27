@@ -73,11 +73,16 @@ For your convenience, I have added comments indicating the exact **line numbers 
 
 ## 👤 Author & Contact
 
-**Name:** Aniket Chowdhury (aka Hashtag)  
-**Email:** micro.aniket@example.com  
-**GitHub:** [itzzhashtag](https://github.com/itzzhashtag)  
-**Instagram:** [@itzz_hashtag](https://instagram.com/itzz_hashtag)  
-**LinkedIn:** [itzz-hashtag](https://www.linkedin.com/in/itzz-hashtag/)
+---
+
+## 👤 Author & Contact
+
+📧 <strong>**Email:**</strong> <a href="mailto:micro.aniket@gmail.com">micro.aniket@example.com</a><br>
+💼 <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/itzz-hashtag/">itzz-hashtag</a><br>
+🐙 <strong>GitHub:</strong> <a href="https://github.com/itzzhashtag">itzzhashtag</a><br>
+📸 <strong>Instagram:</strong> <a href="https://instagram.com/itzz_hashtag">@itzz_hashtag</a>
+
+---
 
 ---
 
