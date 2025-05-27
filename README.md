@@ -1,6 +1,6 @@
 <div align="center">
  
-# AuraSense-IOT-ESP-1 🌐🔧
+# 🔧 AuraSense-IOT-ESP-1 🌐
 
 **by [Aniket Chowdhury](mailto:micro.aniket@gmail.com) (aka `#Hashtag`)**
 
