@@ -60,7 +60,7 @@ const int Buzz = 23;                      // Buzzer Input
 //===============================================
 //--- Global State Variables ---
 //===============================================
-hd44780_I2Cexp lcd;                       // Initialize LCD Matrix to (20x4)
+hd44780_I2Cexp lcd;                       // Initialize LCD Matrix to (20x4)  SDA (Data Line): GPIO21, SCL (Clock Line): GPIO22
 DHT dht(DHTPIN, DHTTYPE);                 // Initialize DHT sensor
 int h = 0, t1 = 0;                        // Stores Humidity and Temperature Values[int]
 float t = 0;                              // Stores Temperature value
