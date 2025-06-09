@@ -60,7 +60,7 @@ WebServer server(80);                     // Web UI Server
 #define CLK_PIN    18                     // Clock Pin of Matrix Display
 #define CS_PIN_TOP    5                   // CS pin of top Matrix
 #define CS_PIN_BOTTOM 15                  // CS pin of Bottom Matrix
-const int LDR_PIN = 32;                   // Ldr_Pin of LED
+const int LDR_PIN = 32;                   // Light Dependent Registor Pin
 MD_Parola m2(MD_MAX72XX::FC16_HW, CS_PIN_TOP, MAX_DEVICES);    // Bottom row
 MD_Parola m1(MD_MAX72XX::FC16_HW, CS_PIN_BOTTOM, MAX_DEVICES); // Top row
 
@@ -108,15 +108,15 @@ void setup()
 //===============================================
 void loop()
 {
-  if (WiFi.status() != WL_CONNECTED)// Check Wifi each time and retry if not Connected
+  if (WiFi.status() != WL_CONNECTED)                // Check Wifi each time and retry if not Connected
     wifi_connect();
   client_connect();
   if (mq5Val < 700)
   {
     gasDisplayed = false;
-    int ldrValue = analogRead(LDR_PIN);
-    int brightness1 = map(ldrValue, 0, 4095, 15, 1);
-    m1.setIntensity(brightness1);
+    int ldrValue = analogRead(LDR_PIN);              // Reads Light available on enviroment between 0-4095
+    int brightness1 = map(ldrValue, 0, 4095, 15, 1); // Raps 0-4095 to 15-1 (Matrix brightness levels
+    m1.setIntensity(brightness1);                    // Sets Brightness according to the LCR Sensor
     m2.setIntensity(brightness1);
     unsigned long currentMillis = millis();
 
