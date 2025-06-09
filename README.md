@@ -13,18 +13,18 @@
 ---
 
 <div align="center">
-AuraSense IOT (ESP-1) is a dual-ESP32 based real-time room environment monitoring and weather display system. It demonstrates wireless TCP/IP communication between two ESP32 devices, sensor data collection, API integration, and visual output on an LED matrix display.
+AuraSense IOT (ESP) is a triple-ESP32 based real-time room environment, harmful gases and air quality monitoring system with advanced wireless TCP/IP communication between ESP32 devices, multi-sensor data collection, and dynamic visual outputs on both LED matrix and LCD displays.
 </div>
 
 ---
 
 ## 📡 Project Overview
 
-This project creates a smart room dashboard using two ESP32 microcontrollers:
+This project builds an intelligent room air-quality dashboard using two ESP32 microcontrollers:
 
-- **Server ESP32:** Collects real-time sensor data (Temperature, Humidity, Air Quality) and transmits it via TCP over Wi-Fi.
-- **Client ESP32:** Receives sensor data, displays it on a dual 8x32 LED matrix, fetches weather updates from Weather API, and hosts a local web interface for real-time monitoring.
-
+- **Client ESP3:** Collects Lpg Gas value from MQ5 Sensor Locally and displays it locally on an LCD display with led indicators and sends the data to Client ESP2 over Wi-Fi.
+- **Server ESP2:** Collects air quality, temperature, and humidity data, displays it locally on an LCD display with RGB indicators and sends the data to Client ESP1 over Wi-Fi.
+- **Client ESP3:** Receives room environment data and external MQ5 sensor data Network connected ESP1, displays information on a dual 8x32 LED matrix, fetches weather data from Weather API, and hosts a real-time web interface.
 ---
 
 ⚠️ **Important Notice Before Using the Code**
@@ -37,27 +37,37 @@ For your convenience, I have added comments indicating the exact **line numbers 
 
 ## 🔧 Features
 
-- 📶 **ESP-to-ESP TCP Communication** on local network.
-- 🌡️ **DHT22** for temperature and humidity sensing.
-- 🌫️ **MQ-135** for air quality monitoring.
-- 🔲 **LED Matrix Display (2 x 8x32)** using MD_MAX72XX and Parola libraries.
-- 🌍 **Weather Data** fetched from a Weather API. [Lot of Options] - I personally Chose www.tomorrow.io
-- 🕒 **NTP Time Sync** for accurate data logging.
-- 🌐 **Web Server UI** for real-time monitoring via browser.
-- ♻️ **Auto-Reconnect & Watchdog Timer** for system reliability.
+- 📶 **ESP-to-ESP TCP Communication** on a local network.
+- 🌡️ **DHT22 Sensor** for real-time temperature and humidity measurement.
+- 🌫️ **MQ-135 Sensor** for indoor air quality monitoring (AQI).
+- 🚬 **MQ-7 Sensor** for carbon monoxide (CO) level detection.
+- 🍳 **MQ-5 Sensor** for gas leakage monitoring (data fetched from 3rd ESP over TCP).
+- 🔳 **LED Matrix Display (2 x 8x32)** on Client ESP for weather + room data.
+- 📺 **20x4 LCD Display** on Server ESP for local live display of AQI, CO, temperature, and humidity.
+- 🎨 **RGB LED Indicators** to show air quality status (safe/moderate/hazardous).
+- 🌍 **Weather Data** integration from [Tomorrow.io](https://www.tomorrow.io/) API (customizable).
+- 🕒 **NTP Time Synchronization** for accurate time display and logging.
+- 🌐 **Web Server UI** for room and weather data visualization in a browser.
+- ♻️ **Auto-Reconnect & Self-Healing Communication** for robustness.
 
 ---
 
 ## 🖥️ Hardware Used
 
-| Component         | Description                                 |
-|------------------|---------------------------------------------|
-| ESP32 (x2)       | Dual-core Wi-Fi + Bluetooth microcontroller |
-| DHT22            | Temperature and Humidity Sensor             |
-| MQ-135           | Air Quality Sensor                          |
-| 8x32 LED Matrix  | Dot Matrix Display x 2 Modules              |
-| Power Supply     | 5V DC supply                                |
-| Wi-Fi Router     | For ESP-to-ESP communication                |
+| Component         | Description                                    |
+|------------------|-------------------------------------------------|
+| ESP32 (x2)       | Dual-core Wi-Fi + Bluetooth microcontroller     |
+| ESP32 (x1)       | Third ESP for remote MQ5 sensor                 |
+| DHT22            | Temperature and Humidity Sensor                 |
+| MQ-135           | Air Quality Sensor (AQI)                        |
+| MQ-7             | Carbon Monoxide Sensor                          |
+| MQ-5             | Gas Leak Sensor (data sent wirelessly)          |
+| 8x32 LED Matrix  | Dot Matrix Display x 2 Modules                  |
+| 20x4 LCD         | I2C LCD Display for room environment readout    |
+| RGB LED          | Status Indicator (R-G-B common cathode)         |
+| Power Supply     | 5V DC supply                                    |
+| Wi-Fi Router     | For ESP-to-ESP communication                    |
+| LDR Sensor       | LDR manages the Brightness of the MAtrix display |
 
 ---
 
@@ -70,6 +80,7 @@ For your convenience, I have added comments indicating the exact **line numbers 
 - `Adafruit_Sensor.h`
 - `MD_Parola`
 - `MD_MAX72XX`
+- `LiquidCrystal_I2C`
 - `NTPClient`
 - `WiFiUdp`
 - `HTTPClient`
@@ -78,10 +89,35 @@ For your convenience, I have added comments indicating the exact **line numbers 
 
 ## 📝 Setup Instructions
 
-1. Flash `server.ino` on one ESP32 and `client.ino` on the other.
-2. Update Wi-Fi credentials and OpenWeatherMap API key in the client code.
-3. Ensure both devices are powered and connected to the same Wi-Fi.
-4. Access the client’s IP in your browser to see real-time data.
+1. Flash `ESP1.ino` on one ESP1 (Client ESP), `ESP2.ino` on the second ESP32 (Server ESP) and `ESP3.ino` on the third ESP32 (Client ESP).
+2. Update Wi-Fi credentials and Tomorrow.io API key in both Server and Client code. 
+3. Connect sensors to the correct GPIO pins as described in the code comments.
+4. Power all devices and ensure they connect to the same Wi-Fi network.
+5. Update Data Values accoring to the Values of the Sensor (Experiment).
+6. Access Client ESP's IP in your browser to see live room data and weather.
+
+---
+
+## 📊 Display Layout
+
+### Server ESP (20x4 LCD) - ESP3
+
+| 1    | MQ5 Gas Sensor Value (from remote ESP3) |
+| 2    | Display Appropriate Data on local LCD |
+| 3    | Send MQ5 Data to ESP2 over Network |
+
+### Server ESP (20x4 LCD) - ESP2
+
+| Line | Display Contents                        |
+|------|-----------------------------------------|
+| 1    | Air Quality (ppm value & text)          |
+| 2    | CO level (ppm value & text)             |
+| 3    | Room Temperature & Humidity             |
+
+### Client ESP (LED Matrix) - ESP1
+
+| Top Row  | Dynamic scrolling Weather Data |
+| Bottom Row | Air Quality, CO, Temperature, Humidity |
 
 ---
 
@@ -97,14 +133,18 @@ For your convenience, I have added comments indicating the exact **line numbers 
 
 ## 📌 Future Improvements
 
-- MQTT integration for scalable cloud communication.
-- Historical data logging and analytics on cloud.
-- Mobile app for remote control.
-- More sensors (e.g., CO, light, noise).
-- UI improvements on the web server (charts/graphs).
+- Implement full **MQTT** support for scalable IoT cloud communication.
+- Add **historical data logging** and cloud analytics.
+- Develop a **mobile app** for real-time control and notifications.
+- Expand sensor suite with **light**, **noise**, **motion**, and **CO2** sensors.
+- Improve Web UI with **dynamic charts**, **graphs**, and **logging**.
+- Implement **OTA updates** for easy firmware upgrades.
 
 ---
 
 ## 📜 License
 
-This project is open-source and available under the MIT License.
+This project is released under **MIT License** — free for personal and educational use.
+
+---
+
