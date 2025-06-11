@@ -16,7 +16,7 @@
 //Open File->Preferences->Additional Boards Manager URL's ->(Copy and Paste) "https://dl.espressif.com/dl/package_esp32_index.json,http://arduino.esp8266.com/stable/package_esp8266com_index.json"
 //ALso Change Values and Data before using the code (Changes needed)
 // Line Number ->32,33,35,36,39,40,41
-// Line Number -> 71,72,125,131,132 [Calibrate the values according to your Data Available]
+// Line Number -> 73,74,75,76,77,78,79,136,137 [Calibrate the values according to your Data Available]
 
 //=====================================================
 // --- Libraries Used ---
@@ -60,7 +60,7 @@ const int Buzz = 23;                      // Buzzer Input
 //===============================================
 //--- Global State Variables ---
 //===============================================
-hd44780_I2Cexp lcd;                       // Initialize LCD Matrix to (20x4)  SDA (Data Line): GPIO21, SCL (Clock Line): GPIO22
+hd44780_I2Cexp lcd;                       // Initialize LCD Matrix to (20x4)
 DHT dht(DHTPIN, DHTTYPE);                 // Initialize DHT sensor
 int h = 0, t1 = 0;                        // Stores Humidity and Temperature Values[int]
 float t = 0;                              // Stores Temperature value
@@ -68,10 +68,15 @@ int ppm = 0;                              // Stores AoQ value
 int mq7Val = 0;                           // Stores MQ7 value
 int mq5Val = 0;                           // Stores MQ5 value
 int mq135Val = 0;                         // Stores MQ135 value
-int threshold1 = 460;                     // AoQ Level Poor Threshold
-int threshold2 = 550;                     // AoQ Level Hazardeous Threshold
 int counter = 1, x = 0, y = 0;            // Counters
 int flag1 = 0, flag2 = 0, flag3 = 0;      // Flag Variables
+int LPGval = 700                          // Threshold for Gas Leakage
+int th1 = 0;                              // Threshold for Excellent AQ
+int th2 = 200;                            // Threshold for Good AQ
+int th3 = 400;                            // Threshold for Fair AQ
+int th4 = 500;                            // Threshold for Moderate AQ
+int th5 = 650;                            // Threshold for Poor AQ
+int th6 = 800;                            // Threshold for Hazardous AQ
 
 //=====================================================
 // --- Custum Character for LCD ---
@@ -96,10 +101,10 @@ void setup()
   pinMode(led_G, OUTPUT);                  // led_G set as INPUT
   pinMode(led_Y, OUTPUT);                  // led_Y set as INPUT
   pinMode(Buzz, OUTPUT);                   // Buzzer set as INPUT
-  digitalWrite(led_R, HIGH);
-  digitalWrite(led_G, HIGH);
-  digitalWrite(led_Y, HIGH);
-  digitalWrite(Buzz, HIGH);
+  digitalWrite(led_R, HIGH);               // Turns Red Led ON
+  digitalWrite(led_G, HIGH);               // Turns Green Led ON
+  digitalWrite(led_Y, HIGH);               // Turns Yellow Led ON
+  digitalWrite(Buzz, HIGH);                // Set Buzzer to OFF State
   pinMode (MQ135sensor, INPUT);            // MQ135 set as INPUT
   pinMode (MQ7sensor, INPUT);              // MQ7 set as INPUT
   dht.begin();
@@ -122,7 +127,7 @@ void loop()
   if (WiFi.status() != WL_CONNECTED)      // Check Wifi each time and retry if not Connected
     esp_booting();
   Sub_Client();                           // Receives Data from ESP3
-  if (mq5Val <= 700)
+  if (mq5Val <= LPGval)                   // If LPG Normal State
   {
     mq135Val = analogRead(MQ135sensor);   // Read Analogue MQ135 Values
     mq7Val = analogRead(MQ7sensor);       // Read Analogue MQ7 Values
@@ -158,58 +163,12 @@ void loop()
     lcd.setCursor(11, 2); 
     lcd.print("AoQ :"); 
     lcd.print(ppm);
-    if (ppm > threshold1 && ppm < threshold2) 
-    {
-      lcd.setCursor(0, 3); 
-      lcd.print("  AoQ Level Poor ");
-      Serial.println("AoQ Level Poor");
-      lcd.write(byte(4));
-      lcd.print("   ");
-      lcd.setCursor(0, 3);
-      digitalWrite(led_R, LOW);
-      digitalWrite(led_G, LOW);
-      digitalWrite(led_Y, HIGH);
-      if (flag3 == 0)
-      {
-        flag3 = 1;
-        warningBuzz(2, 250);
-      }
-    }
-    else if (ppm > threshold2) 
-    {
-      lcd.setCursor(0, 3);        
-      lcd.print(" AoQ Lvl Hazardous ");
-      lcd.write(byte(0));
-      lcd.print("");
-      Serial.println("AQ Level DANGER");
-      lcd.setCursor(0, 1);
-      digitalWrite(led_R, HIGH);
-      digitalWrite(led_G, LOW);
-      digitalWrite(led_Y, LOW);
-      if (flag2 == 0)
-      {
-        flag2 = 1;
-        warningBuzz(3, 300);
-      }
-    }
-    else
-    {
-      lcd.setCursor(0, 3);
-      lcd.print ("   AQ Level Good ");
-      lcd.write(byte(2));
-      lcd.print("  ") ;
-      flag2 = 0;
-      flag3 = 0;
-      Serial.println("AQ Level Good");
-      digitalWrite(led_R, LOW);
-      digitalWrite(led_G, HIGH);
-      digitalWrite(led_Y, LOW);
-    }
+    threshold_display();                       // Display AoQ on LCD with ref to ppm
     delay(400);
-    Main_Client();                        // Send those Data to ESP1
+    Main_Client();                             // Send those Data to ESP1
     lcd.clear();
   }
-  else if (mq5Val > 700)                  // Jump Here if Gas Leaks...!!
+  else if (mq5Val > LPGval))                   // If LPG Normal State
   {
     digitalWrite(led_R, HIGH);
     digitalWrite(led_G, LOW);
@@ -228,12 +187,110 @@ void loop()
     lcd.write(byte(0));
     lcd.print("  GAS Leaking..!! ");
     delay(50);
-    warningBuzz(3, 300);
-    Main_Client();
+    warningBuzz(3, 300);                       // Buzzer beeps for 3 time with 300 delay 
+    Main_Client();                             // Sends Data to ESP1
     delay(500);
   }
 }
-
+//=====================================================
+// --- Aoq Display ---
+//=====================================================
+void threshold_display()
+{
+  if (ppm > th1 && ppm <= th2)
+  {
+    flag2 = 0;
+    flag3 = 0;
+    lcd.setCursor(0, 3);
+    lcd.print(" AoQ Lvl: Excellent");
+    lcd.write(byte(2));
+    Serial.println("AQ Level Excellent");
+    digitalWrite(led_R, LOW);
+    digitalWrite(led_G, HIGH);
+    digitalWrite(led_Y, LOW);
+  }
+  else if (ppm > th2 && ppm <= th3)
+  {
+    flag2 = 0;
+    flag3 = 0;
+    lcd.setCursor(0, 3);
+    lcd.print ("  AoQ Level Good ");
+    lcd.write(byte(2));
+    lcd.print("  ");
+    Serial.println("AQ Level Good");
+    digitalWrite(led_R, LOW);
+    digitalWrite(led_G, HIGH);
+    digitalWrite(led_Y, LOW);
+  }
+  else if (ppm > th3 && ppm <= th4)
+  {
+    flag2 = 0;
+    flag3 = 0;
+    lcd.setCursor(0, 3);
+    lcd.print(" AoQ Level: Fair ");
+    lcd.write(byte(2));
+    lcd.print("  ");
+    Serial.println("AQ Level Fair");
+    digitalWrite(led_R, LOW);
+    digitalWrite(led_G, HIGH);
+    digitalWrite(led_Y, HIGH);
+  }
+  else if (ppm > th4 && ppm <= th5)
+  {
+    flag2 = 0;
+    flag3 = 0;
+    lcd.setCursor(0, 3);
+    lcd.print(" AoQ Lvl: Moderate ");
+    lcd.write(byte(4));
+    lcd.print(" ");
+    Serial.println("AQ Level Moderate");
+    digitalWrite(led_R, LOW);
+    digitalWrite(led_G, LOW);
+    digitalWrite(led_Y, HIGH);
+  }
+  else if (ppm > th5 && ppm <= th6)
+  {
+    flag2 == 0;
+    lcd.setCursor(0, 3);
+    lcd.print("  AoQ Level Poor ");
+    Serial.println("AoQ Level Poor");
+    lcd.write(byte(4));
+    lcd.print("  ");
+    lcd.setCursor(0, 3);
+    digitalWrite(led_R, LOW);
+    digitalWrite(led_G, LOW);
+    digitalWrite(led_Y, HIGH);
+    if (flag3 == 0)
+    {
+      flag3 = 1;
+      warningBuzz(2, 250);
+    }
+  }
+  else if (ppm > th6)
+  {
+    flag3 = 0;
+    lcd.setCursor(0, 3);
+    lcd.print(" AoQ Lvl Hazardous ");
+    lcd.write(byte(0));
+    Serial.println("AQ Level DANGER");
+    lcd.setCursor(0, 1);
+    digitalWrite(led_R, HIGH);
+    digitalWrite(led_G, LOW);
+    digitalWrite(led_Y, LOW);
+    if (flag2 == 0)
+    {
+      flag2 = 1;
+      warningBuzz(3, 300);
+    }
+  }
+  else
+  {
+    lcd.setCursor(0, 3);
+    lcd.print("     AoQ ERROR ");
+    lcd.write(byte(4));
+    lcd.print("    ");
+  }
+}
 //=====================================================
 // --- Networking and Connect ---
 //=====================================================
@@ -381,10 +438,10 @@ void warningBuzz(int times, int duration )
 {
   for (int i = 0; i < times; i++)
   {
-    digitalWrite(Buzz, LOW);  // Turn buzzer ON
+    digitalWrite(Buzz, LOW);        // Turn buzzer ON
     digitalWrite(led_R, HIGH);
     delay(duration);
-    digitalWrite(Buzz, HIGH);   // Turn buzzer OFF
+    digitalWrite(Buzz, HIGH);       // Turn buzzer OFF
     digitalWrite(led_R, LOW);
     delay(duration);
   }
