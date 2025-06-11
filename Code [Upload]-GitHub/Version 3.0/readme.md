@@ -160,7 +160,8 @@ const int esp2_port = 81;
 - Hosted at http://ESP1_IP/ (port 80)
 - Responsive live sensor data
 - Example UI Screenshot:
-![Web UI-2 0](https://github.com/user-attachments/assets/0e6350c5-1ab4-4f9c-8393-51ee4d95e0d3)
+![image](https://github.com/user-attachments/assets/f4c7208b-ed97-4ddb-89be-d28776b153b3)
+
 
 ---
 
