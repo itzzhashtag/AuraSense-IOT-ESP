@@ -75,7 +75,7 @@ HTTPClient
 
 | Component                          | Qty |
 |------------------------------------|-----|
-| ESP32 / ESP8266 Boards              | 3   |
+| ESP32 Boards              | 3   |
 | MAX7219 Dot Matrix Modules (8x8)    | 16  |
 | MQ5 Gas Sensor                      | 1   |
 | MQ135 Air Quality Sensor            | 1   |
