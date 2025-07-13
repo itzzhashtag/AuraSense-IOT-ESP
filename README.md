@@ -13,16 +13,16 @@
 ---
 
 <div align="center">
-AuraSense IOT (ESP) is a triple-ESP32 based real-time room environment, harmful gases and air quality monitoring system with advanced wireless TCP/IP communication between ESP32 devices, multi-sensor data collection, and dynamic visual outputs on both LED matrix and LCD displays.
+AuraSense IOT (ESP) is a Multi-ESP32 based real-time Home Environment, harmful gases and air quality monitoring system with advanced wireless TCP/IP communication between ESP32 devices, multi-sensor data collection, and dynamic visual outputs on both LED matrix and LCD displays.
 </div>
 
 ---
 
 ## 📡 Project Overview
 
-This project builds an intelligent room air-quality dashboard using two ESP32 microcontrollers:
+This project builds an intelligent room air-quality dashboard using Many ESP32 microcontrollers:
 
-- **Client ESP3:** Collects Lpg Gas value from MQ5 Sensor Locally and displays it locally on an LCD display with led indicators and sends the data to Client ESP2 over Wi-Fi.
+- **Client ESP3:** Collects Lpg Gas value from MQ5 and DHT11 Sensor Locally and displays it locally on an LCD display with led indicators and sends the data to Client ESP2 over Wi-Fi.
 - **Server ESP2:** Collects air quality, temperature, and humidity data, displays it locally on an LCD display with RGB indicators and sends the data to Client ESP1 over Wi-Fi.
 - **Client ESP3:** Receives room environment data and external MQ5 sensor data Network connected ESP1, displays information on a dual 8x32 LED matrix, fetches weather data from Weather API, and hosts a real-time web interface.
 ---
@@ -39,6 +39,7 @@ For your convenience, I have added comments indicating the exact **line numbers 
 
 - 📶 **ESP-to-ESP TCP Communication** on a local network.
 - 🌡️ **DHT22 Sensor** for real-time temperature and humidity measurement.
+- 🌡️ **DHT11 Sensor** for real-time temperature and humidity measurement.
 - 🌫️ **MQ-135 Sensor** for indoor air quality monitoring (AQI).
 - 🚬 **MQ-7 Sensor** for carbon monoxide (CO) level detection.
 - 🍳 **MQ-5 Sensor** for gas leakage monitoring (data fetched from 3rd ESP over TCP).
@@ -59,6 +60,7 @@ For your convenience, I have added comments indicating the exact **line numbers 
 | ESP32 (x2)       | Dual-core Wi-Fi + Bluetooth microcontroller     |
 | ESP32 (x1)       | Third ESP for remote MQ5 sensor                 |
 | DHT22            | Temperature and Humidity Sensor                 |
+| DHT11            | Temperature and Humidity Sensor                 |
 | MQ-135           | Air Quality Sensor (AQI)                        |
 | MQ-7             | Carbon Monoxide Sensor                          |
 | MQ-5             | Gas Leak Sensor (data sent wirelessly)          |
@@ -102,9 +104,12 @@ For your convenience, I have added comments indicating the exact **line numbers 
 
 ### Server ESP (20x4 LCD) - ESP3
 
+| Line | Display Contents                        |
+|------|-----------------------------------------|
 | 1    | MQ5 Gas Sensor Value (from remote ESP3) |
-| 2    | Display Appropriate Data on local LCD |
-| 3    | Send MQ5 Data to ESP2 over Network |
+| 2    | Calibrates Threshold Value Based on DHT11 |
+| 3    | Display Appropriate Data on local LCD |
+| 4    | Send MQ5 Data to ESP2 over Network |
 
 ### Server ESP (20x4 LCD) - ESP2
 
@@ -116,6 +121,8 @@ For your convenience, I have added comments indicating the exact **line numbers 
 
 ### Client ESP (LED Matrix) - ESP1
 
+| Line | Display Contents                        |
+|------|-----------------------------------------|
 | Top Row  | Dynamic scrolling Weather Data |
 | Bottom Row | Air Quality, CO, Temperature, Humidity |
 
