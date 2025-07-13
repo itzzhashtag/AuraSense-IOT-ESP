@@ -66,6 +66,7 @@ Now with adaptive thresholds, real-time inter-ESP communication, and intelligent
 | MQ135 Air Quality Sensor            | 1   |
 | MQ7 CO Sensor                       | 1   |
 | DHT22 Temperature/Humidity Sensor   | 1   |
+| DHT11 Temperature/Humidity Sensor   | 1   |
 | LDR (for ambient light detection)   | 1   |
 | 5V Power Supply                     | 1+  |
 | Misc. jumpers, connectors, resistors| -   |
