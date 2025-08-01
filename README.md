@@ -151,8 +151,14 @@ For your convenience, I have added comments indicating the exact **line numbers 
 
 ## 📜 License
 
-This project is for **personal/home use only**.  
-For any collaboration, replication, or commercial adaptation, contact the author.
+This project is released under a Modified MIT License.
+It is intended for personal and non-commercial use only.
+
+🚫 Commercial use or distribution for profit is not permitted without prior written permission.
+🤝 For collaboration, reuse, or licensing inquiries, please contact the author.
+
+📄 View Full License <br>
+[![License: MIT–NC](https://img.shields.io/badge/license-MIT--NC-blue.svg)](./LICENSE)
 
 ---
 
@@ -164,5 +170,3 @@ If you find it useful or inspiring, feel free to ⭐ the repository or connect w
 ---
 
 > _“If the mind can create, the hands can translate.”_ – Hashtag
----
-
