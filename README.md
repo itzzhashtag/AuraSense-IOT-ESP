@@ -27,7 +27,7 @@ This project builds an intelligent room air-quality dashboard using Many ESP32 m
 - **Client ESP3:** Receives room environment data and external MQ5 sensor data Network connected ESP1, displays information on a dual 8x32 LED matrix, fetches weather data from Weather API, and hosts a real-time web interface.
 ---
 
-⚠️ **Important Notice Before Using the Code**
+⚠️ **Important Notice Before Using the Code** 
 
 Please make sure to **change the placeholder values and data variables** in the code before running it.
 
